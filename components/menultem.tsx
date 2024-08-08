@@ -1,18 +1,35 @@
-import React from "react";
+import Link from "next/link";
+import React, { useState } from "react";
 
 interface Props {
   title: string;
-  subMeuns: string[];
+  subMenus: { title: string; href: string }[]; // subMenus를 객체 배열로 수정
 }
 
-const Page: React.FC<Props> = ({ title, subMeuns }) => {
-  const array = ["읽기", "쓰기", "독해"];
+const Page: React.FC<Props> = ({ title, subMenus }) => {
+  const [isMenuShow, setIsMenuShow] = useState(false);
+
   return (
     <div>
-      {title}
+      <div
+        className="cursor-pointer"
+        onClick={() => {
+          setIsMenuShow(!isMenuShow);
+        }}
+      >
+        {title}
+      </div>
       <div>
-        {array.map((item, index) => (
-          <div key={index}>{item}</div>
+        {subMenus.map((menu, index) => (
+          <Link
+            key={index}
+            className={`${
+              !isMenuShow && "hidden"
+            } absolute text-black font-bold top-17 bg-white place-self-center py-10 px-4 rounded-lg mr-[1300px]`}
+            href={menu.href}
+          >
+            {menu.title}
+          </Link>
         ))}
       </div>
     </div>
